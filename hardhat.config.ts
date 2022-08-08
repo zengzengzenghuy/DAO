@@ -11,14 +11,14 @@ const config: HardhatUserConfig={
   defaultNetwork:"hardhat",
   networks:{
     hardhat:{
+      // used when running test (and npx hardhat deploy)
       chainId:31337,
+      allowUnlimitedContractSize: true
     },
     localhost:{
-      chainId: 31337, // not the same with hardhat although chainId is the same
-    },
-    goerli:{
-      //TODO
-    },
+      // used when running "npx hardhat node"
+      chainId: 31337,// not the same with hardhat although chainId is the same
+    }
   },
   solidity:{
     version:"0.8.8"
