@@ -18,6 +18,7 @@ const config: HardhatUserConfig={
     localhost:{
       // used when running "npx hardhat node"
       chainId: 31337,// not the same with hardhat although chainId is the same
+      allowUnlimitedContractSize: true
     }
   },
   solidity:{
