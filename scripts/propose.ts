@@ -22,13 +22,15 @@ export async function propose(args: any[],functionToCall: string){
         DESCRIPTION
     );
     if (developmentChains.includes(network.name)){
-        await moveBlocks(VOTING_DELAY+1);
+        await moveBlocks(VOTING_DELAY+2);
     }
     const proposeReceipt = await proposeTx.wait(1);
     //https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/Governor.sol#L271
     const proposalId = proposeReceipt.events[0].args.proposalId;
     console.log(`Proposed with Proposal ID: \n ${proposalId}`);
     
+    // Governor.state() 
+    // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/Governor.sol#L145
     const proposalState = await governor.state(proposalId)
     const proposalSnapShot = await governor.proposalSnapshot(proposalId)
     const proposalDeadline = await governor.proposalDeadline(proposalId)
@@ -40,6 +42,9 @@ export async function propose(args: any[],functionToCall: string){
     fs.writeFileSync(proposalsFile,JSON.stringify(proposals));
 
     // // The state of the proposal. 1 is not passed. 0 is passed.
+    // proposalState is from IGovernor.sol
+    // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/IGovernor.sol#L14
+    // 0: pending
     console.log(`Current Proposal State: ${proposalState}`)
     // What block # the proposal was snapshot
     console.log(`Current Proposal Snapshot: ${proposalSnapShot}`)
