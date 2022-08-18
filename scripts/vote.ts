@@ -5,7 +5,7 @@ import {proposalsFile,VOTING_PERIOD,developmentChains} from "../helper-deploy.ts
 import {moveBlocks} from "../utils/move-blocks"
 
 // get last index on proposal.json = latest proposalId
-const index = 3;
+const index = 6;
 async function vote(proposalIndex:number){
     const proposals = JSON.parse(fs.readFileSync(proposalsFile,"utf8"));
     const proposalId = proposals[network.config.chainId!][proposalIndex];
@@ -29,7 +29,8 @@ async function vote(proposalIndex:number){
     await voteTxResponse.wait(1);
     // status of voting
 
-    console.log("Voted!")
+    console.log("Voted!");
+    //console.log(voteTxResponse.events[0].args.reason);
     const executionTxResponse = await governor.state(proposalId);
     // enum ProposalState {
     //     Pending,
@@ -41,7 +42,7 @@ async function vote(proposalIndex:number){
     //     Expired,
     //     Executed
     // }
-    console.log(`Execution state: ${executionTxResponse}`)
+    console.log(`Current proposal state state: ${executionTxResponse}`)
     if(developmentChains.includes(network.name)){
         await moveBlocks(VOTING_PERIOD+1);
 
