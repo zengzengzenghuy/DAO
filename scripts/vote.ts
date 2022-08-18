@@ -5,7 +5,7 @@ import {proposalsFile,VOTING_PERIOD,developmentChains} from "../helper-deploy.ts
 import {moveBlocks} from "../utils/move-blocks"
 
 // get last index on proposal.json = latest proposalId
-const index = 6;
+const index = 8;
 async function vote(proposalIndex:number){
     const proposals = JSON.parse(fs.readFileSync(proposalsFile,"utf8"));
     const proposalId = proposals[network.config.chainId!][proposalIndex];
@@ -45,6 +45,7 @@ async function vote(proposalIndex:number){
     console.log(`Current proposal state state: ${executionTxResponse}`)
     if(developmentChains.includes(network.name)){
         await moveBlocks(VOTING_PERIOD+1);
+        console.log("Move blocks")
 
     }
 }

@@ -3,7 +3,7 @@ import { ethers,network } from "hardhat";
 import { NEW_STORE_VALUE,FUNC,DESCRIPTION,developmentChains,VOTING_DELAY,proposalsFile } from "../helper-deploy";
 import { moveBlocks } from "../utils/move-blocks";
 
-export async function propose(args: any[],functionToCall: string){
+export async function propose(args: any[],functionToCall: string,desciption:string){
     const governor = await ethers.getContract("GovernorContract");
     const Votebox = await ethers.getContract("Votebox");
     //https://docs.ethers.io/v5/api/utils/abi/interface/
@@ -22,7 +22,8 @@ export async function propose(args: any[],functionToCall: string){
         DESCRIPTION
     );
     if (developmentChains.includes(network.name)){
-        await moveBlocks(VOTING_DELAY+2);
+        console.log('Yes move to voting delay');
+        await moveBlocks(VOTING_DELAY+1);
     }
     const proposeReceipt = await proposeTx.wait(1);
     //https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/Governor.sol#L271
@@ -52,7 +53,7 @@ export async function propose(args: any[],functionToCall: string){
     console.log(`Current Proposal Deadline: ${proposalDeadline}`)
 }
 
-propose([NEW_STORE_VALUE],FUNC)
+propose([NEW_STORE_VALUE],FUNC,DESCRIPTION)
 .then(()=>process.exit(0))
 .catch((error)=>{
     console.log(error);
